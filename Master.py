@@ -7,3 +7,6 @@ Dominik Trut
 Moritz Güttersberger
 
 """
+
+
+class Energy():
