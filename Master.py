@@ -13,3 +13,6 @@ class Energy():
     def __init__(self, watts, co2):
         self.watts = watts
         self.co2 = co2
+
+    def testForDomi(self):
+        print("Madeira is good")
