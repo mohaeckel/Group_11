@@ -18,8 +18,6 @@ class Energy():
     Attributes
     ----------
 
-    data: pandas dataframe
-        Where data about energy is stored
 
     Methods
     --------
@@ -32,6 +30,8 @@ class Energy():
 
         Parameters
         -----------
+        data : panda dataframe
+            Data for the Energy but will be affected later
 
         Returns
         --------
@@ -56,7 +56,7 @@ class Energy():
         if os.path.exists(os.getcwd()+'/downloads') is False:
             os.mkdir(path+"/downloads")
         else:
-            print("Downloads folder exists")
+            pass
 
         if os.path.isfile("./downloads/data.csv") is True:
             print("File exists")
@@ -67,15 +67,31 @@ class Energy():
             csv_file.write(url_content)
             csv_file.close()
 
-        df = pd.read_csv("./downloads/data.csv")
+        self.data = pd.read_csv("./downloads/data.csv")
 
-        return df
+        return self.data
+
+    def countries_list(self):
+        """
+        Returns the list of countries in the data
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        country_list : list
+
+        """
+        countries = self.data["country"].unique()
+        return countries.tolist()
 
 
-test = Energy()
+teste = Energy()
 
-a = test.read_data(("https://www.stats.govt.nz/assets/Uploads/Annual-enterpri" /
-                    "se-survey/Annual-enterprise-survey-2020-financial-year-p" /
-                    "rovisional/Download-data/annual-enterprise-survey-2020-f" /
-                    "inancial-year-provisional-csv.csv"))
-a.head()
+df = teste.read_data(
+    "https://github.com/owid/energy-data/raw/master/owid-energy-data.csv")
+df.head()
+
+b = teste.countries_list()
