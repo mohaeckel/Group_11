@@ -87,6 +87,9 @@ class Energy():
         countries = self.data["country"].unique()
         return countries.tolist()
 
+    def new_function(self):
+        return print("Hey")
+
 
 teste = Energy()
 
