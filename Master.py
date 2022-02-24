@@ -90,6 +90,34 @@ class Energy():
     def new_function(self):
         return print("Hey")
 
+    def gdp_over_years(self, countries):
+        """
+        Receive a string or a list of strings -> Compare the "gdp" column of 
+        each received country over the years
+
+        Parameters
+        ----------
+        countries : string / list of strings
+            DESCRIPTION. Name of country that is included
+
+        df : dataframe
+            DESCRIPTION: Entire dataframe
+
+        Returns 
+        -------
+        gdp_over_years_df: pandas Dataframe
+            DESCRIPTION: GPD of countries over the years
+                columns = Countries
+                rows = years
+        """
+        df = self.data
+
+        cut = df[["year", "country", "gdp"]]
+
+        fin = cut.pivot(index="year", columns="country", values="gdp")
+
+        return fin
+
 
 teste = Energy()
 
@@ -98,3 +126,5 @@ df = teste.read_data(
 df.head()
 
 b = teste.countries_list()
+
+c = teste.gdp_over_years("Albania")
