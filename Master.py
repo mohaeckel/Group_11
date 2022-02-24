@@ -68,6 +68,7 @@ class Energy():
             csv_file.close()
 
         self.data = pd.read_csv("./downloads/data.csv")
+        self.data = self.data[self.data["year"] >= 1970]
 
         return self.data
 
@@ -92,18 +93,18 @@ class Energy():
 
     def gdp_over_years(self, countries):
         """
-        Receive a string or a list of strings -> Compare the "gdp" column of 
+        Receive a string or a list of strings -> Compare the "gdp" column of
         each received country over the years
 
         Parameters
         ----------
-        countries : string / list of strings
+        countries : list of strings
             DESCRIPTION. Name of country that is included
 
         df : dataframe
             DESCRIPTION: Entire dataframe
 
-        Returns 
+        Returns
         -------
         gdp_over_years_df: pandas Dataframe
             DESCRIPTION: GPD of countries over the years
@@ -111,12 +112,10 @@ class Energy():
                 rows = years
         """
         df = self.data
-
         cut = df[["year", "country", "gdp"]]
-
         fin = cut.pivot(index="year", columns="country", values="gdp")
 
-        return fin
+        return fin[countries]
 
 
 teste = Energy()
@@ -127,4 +126,4 @@ df.head()
 
 b = teste.countries_list()
 
-c = teste.gdp_over_years("Albania")
+c = teste.gdp_over_years(["Albania", "Afghanistan"])
