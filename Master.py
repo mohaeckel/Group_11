@@ -99,23 +99,21 @@ class Energy():
         Parameters
         ----------
         countries : list of strings
-            DESCRIPTION. Name of country that is included
-
-        df : dataframe
-            DESCRIPTION: Entire dataframe
+            DESCRIPTION. Name of every country that is included
 
         Returns
         -------
         gdp_over_years_df: pandas Dataframe
             DESCRIPTION: GPD of countries over the years
                 columns = Countries
-                rows = years
+                index = years
         """
         df = self.data
         cut = df[["year", "country", "gdp"]]
-        fin = cut.pivot(index="year", columns="country", values="gdp")
+        gdp_over_years_df = cut.pivot(
+            index="year", columns="country", values="gdp")
 
-        return fin[countries]
+        return gdp_over_years_df[countries]
 
     def consumption_country(self, countries):
         """
