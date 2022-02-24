@@ -117,6 +117,33 @@ class Energy():
 
         return fin[countries]
 
+    def consumption_country(self, countries):
+        """
+
+        Parameters
+        ----------
+        countries : TYPE
+            DESCRIPTION.
+
+        Returns
+        -------
+        TYPE
+            DESCRIPTION.
+
+        """
+        df = pd.concat([self.data["country"], self.data.filter(
+            regex="_consumption", axis=1)], axis=1)
+        df = df.groupby("country").sum()
+        to_drop = ["Africa", "Europe", "Asia Pacific", "World",
+                   "North America", "CIS", "Middle East", "OPEC",
+                   "South & Central America", "Other Asia & Pacific",
+                   "Europe (other)", "Other Middle East",
+                   "Other Caribbean"]
+        df = df.drop(labels=to_drop, axis=0)
+        df["total_consumption"] = df.sum(axis=1)
+        df = df.loc[countries]
+        return df.reset_index().plot.bar(x="country", y="total_consumption")
+
 
 teste = Energy()
 
@@ -126,4 +153,6 @@ df.head()
 
 b = teste.countries_list()
 
-c = teste.gdp_over_years(["Albania", "Afghanistan"])
+c = teste.gdp_over_years(["Albania", "Afghanistan", "Morocco"])
+
+teste.consumption_country(["Albania", "Afghanistan", "Morocco"])
