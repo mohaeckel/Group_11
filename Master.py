@@ -179,6 +179,37 @@ class Energy():
 
         return metric_df
 
+    def consumption_area_plot(self, country, normalize):
+        """
+        Returns an area chart of the '_consumption' columns
+        for a selected country
+
+        Parameters
+        ----------
+        country : string
+            country you want to see the area chart for.
+        normalize : boolean
+            normalize the chart or not.
+
+        Returns
+        -------
+        area_chart : chart
+
+        """
+        if country not in self.countries_list():  # hashing error here
+            raise TypeError("ValueError")
+
+        df = pd.concat([self.data[["country", "year"]], self.data.filter(
+            regex="_consumption", axis=1)], axis=1)
+        dfcountry = df[df["country"] == country]
+
+        if normalize == True:
+            df_norm = pd.concat([dfcountry[["country", "year"]],
+                                 dfcountry.iloc[:, 3:].apply(lambda x: x / x.sum(), axis=1)], axis=1)
+            return df_norm.plot.area('year', stacked=True)
+        else:
+            return dfcountry.plot.area('year', stacked=True)
+
 
 teste = Energy()
 
@@ -190,6 +221,8 @@ b = teste.countries_list()
 
 c = teste.gdp_over_years(["Albania", "Afghanistan", "Morocco"])
 
-teste.consumption_country(["Albania", "Afghanistan", "Morocco"])
+f = teste.consumption_country(["Albania", "Afghanistan", "Morocco"])
 
 d = teste.prepare_df("gdp")
+
+teste.consumption_area_plot("Albania", True)
