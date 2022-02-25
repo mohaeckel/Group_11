@@ -118,20 +118,20 @@ class Energy():
 
     def consumption_country(self, countries):
         """
-        The method produces a dataframe with defined countries in columns and 
-        all years in rows. Values are the sum of the total energy consumption 
-        of the country. 
+        The method produces a dataframe with defined countries in columns and
+        all years in rows. Values are the sum of the total energy consumption
+        of the country.
 
         Parameters
         ----------
         countries : list of strings
-            A list of countries that are included in the consumption per 
+            A list of countries that are included in the consumption per
             country dataframe
 
         Returns
         -------
         Bar Plot:
-            Displays the bar plot of the total consumption for each 
+            Displays the bar plot of the total consumption for each
             country.
 
         """
@@ -150,7 +150,7 @@ class Energy():
 
     def prepare_df(self, metric):
         """
-        The method produces a dataframe of all countries and years for one 
+        The method produces a dataframe of all countries and years for one
         transmitted metric (i.e. GDP or Population).
 
         Parameters
@@ -203,16 +203,18 @@ class Energy():
             regex="_consumption", axis=1)], axis=1)
         dfcountry = df[df["country"] == country]
 
-        if normalize == True:
-            df_norm = pd.concat([dfcountry[["country", "year"]],
-                                 dfcountry.iloc[:, 3:].apply(lambda x: x / x.sum(), axis=1)], axis=1)
+        if normalize is True:
+            df_norm = pd.concat(
+                [dfcountry[["country", "year"]],
+                 dfcountry.iloc[:, 3:].apply(
+                     lambda x: x / x.sum(), axis=1)], axis=1)
             return df_norm.plot.area('year', stacked=True)
         else:
             return dfcountry.plot.area('year', stacked=True)
 
     def gapminder(self, year):
         """
-        This method shows the correlation between gpd, total engery 
+        This method shows the correlation between gpd, total engery
         consumption and the population per year.
 
         Parameters
@@ -228,13 +230,21 @@ class Energy():
          """
 
         df = self.data
-        only_countries = [e for e in b if e not in ("Africa", "Europe", "Asia Pacific",
-                                                    "World", "North America", "CIS", "Middle East", "OPEC", "South & Central America", "Other Asia & Pacific", "Europe (other)", "Other Middle East", "Other Caribbean")]
+        only_countries = [e for e in b if e not in (
+            "Africa", "Europe", "Asia Pacific", "World", "North America",
+            "CIS", "Middle East", "OPEC", "South & Central America",
+            "Other Asia & Pacific", "Europe (other)", "Other Middle East",
+            "Other Caribbean")]
         df1 = df.query('country in @only_countries').fillna(0)
         gapminder_df = df1[['country', 'year',
                             'gdp', 'population']].reset_index()
-        gapminder_df['total_energy_consumption'] = df1[["biofuel_consumption", "coal_consumption", "fossil_fuel_consumption", "gas_consumption", "hydro_consumption", "low_carbon_consumption",
-                                                        "nuclear_consumption", "oil_consumption", "other_renewable_consumption", "primary_energy_consumption", "renewables_consumption", "solar_consumption", "wind_consumption"]].sum(axis=1)
+        gapminder_df['total_energy_consumption'] = df1[[
+            "biofuel_consumption", "coal_consumption",
+            "fossil_fuel_consumption", "gas_consumption", "hydro_consumption",
+            "low_carbon_consumption", "nuclear_consumption", "oil_consumption",
+            "other_renewable_consumption", "primary_energy_consumption",
+            "renewables_consumption", "solar_consumption",
+            "wind_consumption"]].sum(axis=1)
         gapminder_df2 = gapminder_df.fillna(0)
 
         fig = px.scatter(
