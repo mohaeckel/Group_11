@@ -210,6 +210,48 @@ class Energy():
         else:
             return dfcountry.plot.area('year', stacked=True)
 
+    def gapminder(self, year):
+        """
+        This method shows the correlation between gpd, total engery 
+        consumption and the population per year.
+
+        Parameters
+        ----------
+        year : TYPE
+        """
+
+        """try:
+            isinstance(year, int)
+                #or:  year = int()
+        except TypeError:
+            print("Type Error: the year is not an integer.")
+         """
+
+        df = self.data
+        only_countries = [e for e in b if e not in ("Africa", "Europe", "Asia Pacific",
+                                                    "World", "North America", "CIS", "Middle East", "OPEC", "South & Central America", "Other Asia & Pacific", "Europe (other)", "Other Middle East", "Other Caribbean")]
+        df1 = df.query('country in @only_countries').fillna(0)
+        gapminder_df = df1[['country', 'year',
+                            'gdp', 'population']].reset_index()
+        gapminder_df['total_energy_consumption'] = df1[["biofuel_consumption", "coal_consumption", "fossil_fuel_consumption", "gas_consumption", "hydro_consumption", "low_carbon_consumption",
+                                                        "nuclear_consumption", "oil_consumption", "other_renewable_consumption", "primary_energy_consumption", "renewables_consumption", "solar_consumption", "wind_consumption"]].sum(axis=1)
+        gapminder_df2 = gapminder_df.fillna(0)
+
+        fig = px.scatter(
+            gapminder_df2.query("year == 2007"),
+            x="gdp",
+            y="total_energy_consumption",
+            animation_frame="year",
+            animation_group="country",
+            size="population",
+            color="country",
+            # hover_name="country",
+            log_x=True,
+            size_max=60,
+            # range_x=[100,100000],
+            range_y=[0, 400])
+        fig.show()
+
 
 teste = Energy()
 
@@ -226,3 +268,5 @@ f = teste.consumption_country(["Albania", "Afghanistan", "Morocco"])
 d = teste.prepare_df("gdp")
 
 teste.consumption_area_plot("Albania", True)
+
+teste.gapminder(2010)
