@@ -117,16 +117,17 @@ class Energy():
 
     def consumption_country(self, countries):
         """
-
         Parameters
         ----------
-        countries : TYPE
-            DESCRIPTION.
+        countries : list of strings
+            A list of countries that are included in the consumption per 
+            country dataframe
 
         Returns
         -------
-        TYPE
-            DESCRIPTION.
+        Bar Plot:
+            Displays the bar plot of the total consumption for each 
+            country.
 
         """
         df = pd.concat([self.data["country"], self.data.filter(
@@ -154,3 +155,4 @@ b = teste.countries_list()
 c = teste.gdp_over_years(["Albania", "Afghanistan", "Morocco"])
 
 teste.consumption_country(["Albania", "Afghanistan", "Morocco"])
+ing
