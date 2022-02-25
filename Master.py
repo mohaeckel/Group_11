@@ -10,6 +10,7 @@ Moritz Güttersberger
 import requests
 import pandas as pd
 import os
+import plotly_express as px
 
 
 class Energy():
@@ -117,6 +118,10 @@ class Energy():
 
     def consumption_country(self, countries):
         """
+        The method produces a dataframe with defined countries in columns and 
+        all years in rows. Values are the sum of the total energy consumption 
+        of the country. 
+
         Parameters
         ----------
         countries : list of strings
@@ -143,6 +148,37 @@ class Energy():
         df = df.loc[countries]
         return df.reset_index().plot.bar(x="country", y="total_consumption")
 
+    def prepare_df(self, metric):
+        """
+        The method produces a dataframe of all countries and years for one 
+        transmitted metric (i.e. GDP or Population).
+
+        Parameters
+        ----------
+        metric : string
+            The name of the column from which values are extracted
+            (i.e. "gdp" for values of gdp column).
+
+        Returns
+        -------
+        metric_df: dataframe
+            A dataframe that has all countries in columns and years in rows.
+            Values are the defined metric
+        """
+
+        df = self.data
+        cut = df[["year", "country", metric]]
+        metric_df = cut.pivot(
+            index="year", columns="country", values=metric)
+        to_drop = ["Africa", "Europe", "Asia Pacific", "World",
+                   "North America", "CIS", "Middle East", "OPEC",
+                   "South & Central America", "Other Asia & Pacific",
+                   "Europe (other)", "Other Middle East",
+                   "Other Caribbean"]
+        metric_df = metric_df.drop(labels=to_drop, axis=1)
+
+        return metric_df
+
 
 teste = Energy()
 
@@ -155,4 +191,5 @@ b = teste.countries_list()
 c = teste.gdp_over_years(["Albania", "Afghanistan", "Morocco"])
 
 teste.consumption_country(["Albania", "Afghanistan", "Morocco"])
-ing
+
+d = teste.prepare_df("gdp")
