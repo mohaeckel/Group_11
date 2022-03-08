@@ -93,7 +93,6 @@ class Energy():
         countries = self.data["country"].unique()
         return countries.tolist()
 
-
     def gdp_over_years(self, countries):
         """
         Receive a string or a list of strings -> Compare the "gdp" column of
@@ -265,20 +264,20 @@ class Energy():
         fig.show()
 
 
-teste = Energy()
+test = Energy()
 
-df = teste.read_data(
+df = test.read_data(
     "https://github.com/owid/energy-data/raw/master/owid-energy-data.csv")
 df.head()
 
-b = teste.countries_list()
+b = test.countries_list()
 
-c = teste.gdp_over_years(["Albania", "Afghanistan", "Morocco"])
+c = test.gdp_over_years(["Albania", "Afghanistan", "Morocco"])
 
-f = teste.consumption_country(["Albania", "Afghanistan", "Morocco"])
+f = test.consumption_country(["Albania", "Afghanistan", "Morocco"])
 
-d = teste.prepare_df("gdp")
+d = test.prepare_df("gdp")
 
-teste.consumption_area_plot("Albania", True)
+test.consumption_area_plot("Albania", True)
 
-teste.gapminder(2010)
+test.gapminder(2010)
