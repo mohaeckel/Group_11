@@ -14,10 +14,10 @@ import plotly_express as px
 
 
 class Energy():
-<<<<<<< HEAD
+
     def __init__(self, data):
         self.data = data
-=======
+
     """
 
     Attributes
@@ -93,8 +93,6 @@ class Energy():
         countries = self.data["country"].unique()
         return countries.tolist()
 
-    def new_function(self):
-        return print("Hey")
 
     def gdp_over_years(self, countries):
         """
@@ -284,4 +282,3 @@ d = teste.prepare_df("gdp")
 teste.consumption_area_plot("Albania", True)
 
 teste.gapminder(2010)
->>>>>>> dev-phase
