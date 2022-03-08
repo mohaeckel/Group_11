@@ -231,7 +231,7 @@ class Energy():
          """
 
         df = self.data
-        only_countries = [e for e in b if e not in (
+        only_countries = [e for e in self.countries_list() if e not in (
             "Africa", "Europe", "Asia Pacific", "World", "North America",
             "CIS", "Middle East", "OPEC", "South & Central America",
             "Other Asia & Pacific", "Europe (other)", "Other Middle East",
@@ -248,8 +248,8 @@ class Energy():
             "wind_consumption"]].sum(axis=1)
         gapminder_df2 = gapminder_df.fillna(0)
 
-        fig = px.scatter(
-            gapminder_df2.query("year == 2007"),
+        px.scatter(
+            gapminder_df2.query("year =="+str(year)),
             x="gdp",
             y="total_energy_consumption",
             animation_frame="year",
@@ -260,24 +260,4 @@ class Energy():
             log_x=True,
             size_max=60,
             # range_x=[100,100000],
-            range_y=[0, 400])
-        fig.show()
-
-
-test = Energy()
-
-df = test.read_data(
-    "https://github.com/owid/energy-data/raw/master/owid-energy-data.csv")
-df.head()
-
-b = test.countries_list()
-
-c = test.gdp_over_years(["Albania", "Afghanistan", "Morocco"])
-
-f = test.consumption_country(["Albania", "Afghanistan", "Morocco"])
-
-d = test.prepare_df("gdp")
-
-test.consumption_area_plot("Albania", True)
-
-test.gapminder(2010)
+            range_y=[-1500, 5000]).show(renderer="svg")
