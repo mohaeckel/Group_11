@@ -11,6 +11,8 @@ import requests
 import pandas as pd
 import os
 import plotly_express as px
+import datetime
+
 
 
 class Energy():
@@ -256,8 +258,16 @@ class Energy():
             animation_group="country",
             size="population",
             color="country",
-            # hover_name="country",
             log_x=True,
+            log_y=True,
             size_max=60,
             # range_x=[100,100000],
             range_y=[-1500, 5000]).show(renderer="svg")
+
+#Phase 2: Day 1
+    def year_index (self):
+        df = self.data
+        
+        
+        
+        
