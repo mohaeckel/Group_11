@@ -12,6 +12,8 @@ import pandas as pd
 import os
 import plotly_express as px
 from datetime import datetime
+import matplotlib.pyplot as plt
+
 
 
 class Energy():
@@ -121,6 +123,7 @@ class Energy():
         cut = df[["year", "country", "gdp"]]
         gdp_over_years_df = cut.pivot(
             index="year", columns="country", values="gdp")
+        
 
         return gdp_over_years_df[countries]
 
@@ -152,6 +155,8 @@ class Energy():
                         "solar_consumption",
                         "wind_consumption",
                         "emissions"]]
+
+                        "wind_consumption", "emissions"]]
         df = df.groupby("country").sum()
         df["total_consumption"] = df.iloc[:, :8].sum(axis=1)
         df = df.loc[countries]
@@ -159,6 +164,12 @@ class Energy():
                                "emissions"]].plot.bar(ls = '-',
                                                       secondary_y="emissions",
                                                       )
+        
+        
+        return df.reset_index().plot.bar(x = "country", 
+                                         y = "total_consumption"),
+        df['emissions'] = plt.subplots()
+        
 
     def prepare_df(self, metric):
         """
