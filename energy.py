@@ -14,7 +14,6 @@ import plotly_express as px
 import datetime
 
 
-
 class Energy():
 
     def __init__(self, data):
@@ -239,34 +238,39 @@ class Energy():
             "Other Asia & Pacific", "Europe (other)", "Other Middle East",
             "Other Caribbean")]
         df1 = df.query('country in @only_countries').fillna(0)
+        df1["total_consumption"] = df1[["biofuel_consumption", 
+                                        "coal_consumption",
+                                        "gas_consumption", 
+                                        "hydro_consumption",
+                                        "nuclear_consumption", 
+                                        "oil_consumption",
+                                        "solar_consumption",
+                                        "wind_consumption"]].sum(axis=1)
+
         gapminder_df = df1[['country', 'year',
-                            'gdp', 'population']].reset_index()
-        gapminder_df['total_energy_consumption'] = df1[[
-            "biofuel_consumption", "coal_consumption",
-            "fossil_fuel_consumption", "gas_consumption", "hydro_consumption",
-            "low_carbon_consumption", "nuclear_consumption", "oil_consumption",
-            "other_renewable_consumption", "primary_energy_consumption",
-            "renewables_consumption", "solar_consumption",
-            "wind_consumption"]].sum(axis=1)
-        gapminder_df2 = gapminder_df.fillna(0)
+                            'gdp', 'population', 
+                            'total_consumption']].reset_index()
+        gapminder_df = gapminder_df[gapminder_df['total_consumption'] !=0]
 
         px.scatter(
-            gapminder_df2.query("year =="+str(year)),
+            gapminder_df.query("year == "+str(year)),
             x="gdp",
-            y="total_energy_consumption",
+            y="total_consumption",
             animation_frame="year",
             animation_group="country",
             size="population",
             color="country",
+            # hover_name="country",
             log_x=True,
             log_y=True,
-            size_max=60,
-            # range_x=[100,100000],
-            range_y=[-1500, 5000]).show(renderer="svg")
+            size_max=60).show(renderer="svg")
+
 
 #Phase 2: Day 1
     def year_index (self):
         df = self.data
+        
+        
         
         
         

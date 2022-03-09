@@ -1,10 +1,12 @@
 from energy import Energy
+import plotly_express as px
+import pandas as pd
+import numpy as np
 
 
 test = Energy()
-test.read_data(
+df = test.read_data(
     "https://github.com/owid/energy-data/raw/master/owid-energy-data.csv")
-test.gapminder(2010)
 
 
-test.year_index()
+test.gapminder(2016)
