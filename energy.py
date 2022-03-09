@@ -67,14 +67,18 @@ class Energy():
         self.data = pd.read_csv("./downloads/data.csv")
         self.data = self.data[self.data["year"] >= 1970]
         if drop_continents is True:
-            self.data = self.data.dropna(subset="iso_code")
+            self.data = self.data.dropna(
+                subset="iso_code")
+            self.data = self.data.set_index("country").drop("World")
+            self.data = self.data.reset_index()
+
         else:
             pass
-        
+
         self.data["timestamp"] = pd.to_datetime(self.data["year"], format="%Y")
         self.data = self.data.set_index("timestamp")
-        
-        #enrich data with 'emissions'
+
+        # enrich data with 'emissions'
         self.data['emissions'] = self.data[
             'carbon_intensity_elec']*10**(-6) / 10**(-9)
 
@@ -146,11 +150,13 @@ class Energy():
                         "nuclear_consumption",
                         "oil_consumption",
                         "solar_consumption",
-                        "wind_consumption"]]
+                        "wind_consumption",
+                        "emissions"]]
         df = df.groupby("country").sum()
-        df["total_consumption"] = df.sum(axis=1)
+        df["total_consumption"] = df.iloc[:, :8].sum(axis=1)
         df = df.loc[countries]
-        return df.reset_index().plot.bar(x="country", y="total_consumption")
+        df = df.reset_index()[["total_consumption",
+                               "emissions"]].plot.bar(rot=0)
 
     def prepare_df(self, metric):
         """
