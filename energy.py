@@ -155,8 +155,10 @@ class Energy():
         df = df.groupby("country").sum()
         df["total_consumption"] = df.iloc[:, :8].sum(axis=1)
         df = df.loc[countries]
-        df = df.reset_index()[["total_consumption",
-                               "emissions"]].plot.bar(rot=0)
+        return df.reset_index()[["total_consumption",
+                               "emissions"]].plot.bar(ls = '-',
+                                                      secondary_y="emissions",
+                                                      )
 
     def prepare_df(self, metric):
         """
@@ -266,3 +268,6 @@ class Energy():
             log_x=True,
             log_y=True,
             size_max=60).show(renderer="svg")
+        
+    def allcountries_scatter (self):
+        df = self.data 

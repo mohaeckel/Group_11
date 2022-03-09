@@ -18,4 +18,4 @@ df1 = df1.groupby("country").sum()
 
 df1["total_consumption"] = df1.iloc[:, :8].sum(axis=1)
 
-test.consumption_country(["Netherlands", "Germany"])
+test.consumption_country(["France", "Spain"])
