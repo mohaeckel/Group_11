@@ -70,7 +70,10 @@ class Energy():
             self.data = self.data.dropna(subset="iso_code")
         else:
             pass
-
+        
+        self.data["timestamp"] = pd.to_datetime(self.data["year"], format="%Y")
+        self.data = self.data.set_index("timestamp")
+        
         #enrich data with 'emissions'
         self.data['emissions'] = self.data[
             'carbon_intensity_elec']*10**(-6) / 10**(-9)
@@ -136,8 +139,14 @@ class Energy():
             country.
 
         """
-        df = pd.concat([self.data["country"], self.data.filter(
-            regex="_consumption", axis=1)], axis=1)
+        df = self.data[["country", "biofuel_consumption",
+                        "coal_consumption",
+                        "gas_consumption",
+                        "hydro_consumption",
+                        "nuclear_consumption",
+                        "oil_consumption",
+                        "solar_consumption",
+                        "wind_consumption"]]
         df = df.groupby("country").sum()
         df["total_consumption"] = df.sum(axis=1)
         df = df.loc[countries]
@@ -187,8 +196,15 @@ class Energy():
         if country not in self.countries_list():  # hashing error here
             raise TypeError("ValueError")
 
-        df = pd.concat([self.data[["country", "year"]], self.data.filter(
-            regex="_consumption", axis=1)], axis=1)
+        self.data = self.data.reset_index()
+        df = self.data[["country", "year", "biofuel_consumption",
+                        "coal_consumption",
+                        "gas_consumption",
+                        "hydro_consumption",
+                        "nuclear_consumption",
+                        "oil_consumption",
+                        "solar_consumption",
+                        "wind_consumption"]]
         dfcountry = df[df["country"] == country]
 
         if normalize is True:
