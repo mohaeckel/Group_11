@@ -70,8 +70,11 @@ class Energy():
             self.data = self.data.dropna(subset="iso_code")
         else:
             pass
-        self.data["timestamp"] = pd.to_datetime(self.data["year"], format="%Y")
-        self.data = self.data.set_index("timestamp")
+
+        #enrich data with 'emissions'
+        self.data['emissions'] = self.data[
+            'carbon_intensity_elec']*10**(-6) / 10**(-9)
+
         return self.data
 
     def countries_list(self):
@@ -133,14 +136,8 @@ class Energy():
             country.
 
         """
-        df = self.data[["country", "biofuel_consumption",
-                        "coal_consumption",
-                        "gas_consumption",
-                        "hydro_consumption",
-                        "nuclear_consumption",
-                        "oil_consumption",
-                        "solar_consumption",
-                        "wind_consumption"]]
+        df = pd.concat([self.data["country"], self.data.filter(
+            regex="_consumption", axis=1)], axis=1)
         df = df.groupby("country").sum()
         df["total_consumption"] = df.sum(axis=1)
         df = df.loc[countries]
@@ -190,15 +187,8 @@ class Energy():
         if country not in self.countries_list():  # hashing error here
             raise TypeError("ValueError")
 
-        self.data = self.data.reset_index()
-        df = self.data[["country", "year", "biofuel_consumption",
-                        "coal_consumption",
-                        "gas_consumption",
-                        "hydro_consumption",
-                        "nuclear_consumption",
-                        "oil_consumption",
-                        "solar_consumption",
-                        "wind_consumption"]]
+        df = pd.concat([self.data[["country", "year"]], self.data.filter(
+            regex="_consumption", axis=1)], axis=1)
         dfcountry = df[df["country"] == country]
 
         if normalize is True:
@@ -227,7 +217,7 @@ class Energy():
             print("Type Error: the year is not an integer.")
          """
 
-        df = self.data.reset_index()
+        df = self.data
         df["total_consumption"] = df[["biofuel_consumption",
                                       "coal_consumption",
                                       "gas_consumption",
@@ -254,6 +244,3 @@ class Energy():
             log_x=True,
             log_y=True,
             size_max=60).show(renderer="svg")
-
-
-# Phase 2: Day 1
