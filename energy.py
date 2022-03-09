@@ -12,7 +12,6 @@ import pandas as pd
 import os
 import plotly_express as px
 from datetime import datetime
-import matplotlib.pyplot as plt
 
 
 
@@ -83,6 +82,20 @@ class Energy():
         # enrich data with 'emissions'
         self.data['emissions'] = self.data[
             'carbon_intensity_elec']*10**(-6) / 10**(-9)
+        self.data['emissions'] = self.data['emissions'].fillna(0)
+        
+        # add total consumption for later computation
+        self.data["total_consumption"] = self.data[["biofuel_consumption",
+                                      "coal_consumption",
+                                      "gas_consumption",
+                                      "hydro_consumption",
+                                      "nuclear_consumption",
+                                      "oil_consumption",
+                                      "solar_consumption",
+                                      "wind_consumption"]].sum(axis=1)
+        
+        #drop zeros of population
+        self.data['population'] = self.data['population'].fillna(0)
 
         return self.data
 
@@ -155,14 +168,13 @@ class Energy():
                         "solar_consumption",
                         "wind_consumption",
                         "emissions"]]
-
-                        "wind_consumption", "emissions"]]
         df = df.groupby("country").sum()
         df["total_consumption"] = df.iloc[:, :8].sum(axis=1)
         df = df.loc[countries]
         return df.reset_index()[["total_consumption",
-                               "emissions"]].plot.bar(ls = '-',
-                                                      secondary_y="emissions",
+                               "emissions",'country']].plot.bar(x='country',
+                                                                ec='black',
+                                                      secondary_y="emissions"
                                                       )
         
         
@@ -253,20 +265,11 @@ class Energy():
          """
 
         df = self.data
-        df["total_consumption"] = df[["biofuel_consumption",
-                                      "coal_consumption",
-                                      "gas_consumption",
-                                      "hydro_consumption",
-                                      "nuclear_consumption",
-                                      "oil_consumption",
-                                      "solar_consumption",
-                                      "wind_consumption"]].sum(axis=1)
 
         gapminder_df = df[['country', 'year',
                            'gdp', 'population',
                            'total_consumption']].reset_index()
         gapminder_df = gapminder_df[gapminder_df['total_consumption'] != 0]
-
         px.scatter(
             gapminder_df.query("year == "+str(year)),
             x="gdp",
@@ -280,5 +283,19 @@ class Energy():
             log_y=True,
             size_max=60).show(renderer="svg")
         
-    def allcountries_scatter (self):
-        df = self.data 
+    def allcountries_scatter(self, year ):
+        scatter_df = self.data[['country', 'year', 'population',
+                           'total_consumption','emissions']]    
+        px.scatter(
+            scatter_df.query("year == "+str(year)),
+            x="emissions",
+            y="total_consumption",
+            animation_frame="year",
+            animation_group="country",
+            size="population",
+            color="country",
+            # hover_name="country",
+            #log_x=True,
+            #log_y=True,
+            size_max=60).show(renderer="svg")
+    
