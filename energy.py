@@ -11,24 +11,10 @@ import requests
 import pandas as pd
 import os
 import plotly_express as px
-import datetime
+from datetime import datetime
 
 
 class Energy():
-
-    def __init__(self, data):
-        self.data = data
-
-    """
-
-    Attributes
-    ----------
-
-
-    Methods
-    --------
-
-    """
 
     def __init__(self, data=None):
         """
@@ -43,8 +29,11 @@ class Energy():
         --------
         Nothing, it's just a contructor
         """
+        self.data = data
 
-    def read_data(self, url):
+    def read_data(self, drop_continents: bool = False,
+                  url="https://github.com/owid/energy-data/raw/" +
+                  "master/owid-energy-data.csv"):
         """
         Downloads the data in the ´/downloads´ folder and reads data as well
 
@@ -52,6 +41,8 @@ class Energy():
         -----------
         url: string
             Link of the data from internet
+        drop_continents: bool
+            Drops continents and aggregated countries from dataset
 
         Returns
         --------
@@ -65,7 +56,7 @@ class Energy():
             pass
 
         if os.path.isfile("./downloads/data.csv") is True:
-            print("File exists")
+            pass
         else:
             req = requests.get(url)
             url_content = req.content
@@ -75,6 +66,10 @@ class Energy():
 
         self.data = pd.read_csv("./downloads/data.csv")
         self.data = self.data[self.data["year"] >= 1970]
+        if drop_continents is True:
+            self.data = self.data.dropna(subset="iso_code")
+        else:
+            pass
 
         return self.data
 
@@ -140,12 +135,6 @@ class Energy():
         df = pd.concat([self.data["country"], self.data.filter(
             regex="_consumption", axis=1)], axis=1)
         df = df.groupby("country").sum()
-        to_drop = ["Africa", "Europe", "Asia Pacific", "World",
-                   "North America", "CIS", "Middle East", "OPEC",
-                   "South & Central America", "Other Asia & Pacific",
-                   "Europe (other)", "Other Middle East",
-                   "Other Caribbean"]
-        df = df.drop(labels=to_drop, axis=0)
         df["total_consumption"] = df.sum(axis=1)
         df = df.loc[countries]
         return df.reset_index().plot.bar(x="country", y="total_consumption")
@@ -172,13 +161,6 @@ class Energy():
         cut = df[["year", "country", metric]]
         metric_df = cut.pivot(
             index="year", columns="country", values=metric)
-        to_drop = ["Africa", "Europe", "Asia Pacific", "World",
-                   "North America", "CIS", "Middle East", "OPEC",
-                   "South & Central America", "Other Asia & Pacific",
-                   "Europe (other)", "Other Middle East",
-                   "Other Caribbean"]
-        metric_df = metric_df.drop(labels=to_drop, axis=1)
-
         return metric_df
 
     def consumption_area_plot(self, country, normalize):
@@ -232,25 +214,19 @@ class Energy():
          """
 
         df = self.data
-        only_countries = [e for e in self.countries_list() if e not in (
-            "Africa", "Europe", "Asia Pacific", "World", "North America",
-            "CIS", "Middle East", "OPEC", "South & Central America",
-            "Other Asia & Pacific", "Europe (other)", "Other Middle East",
-            "Other Caribbean")]
-        df1 = df.query('country in @only_countries').fillna(0)
-        df1["total_consumption"] = df1[["biofuel_consumption", 
-                                        "coal_consumption",
-                                        "gas_consumption", 
-                                        "hydro_consumption",
-                                        "nuclear_consumption", 
-                                        "oil_consumption",
-                                        "solar_consumption",
-                                        "wind_consumption"]].sum(axis=1)
+        df["total_consumption"] = df[["biofuel_consumption",
+                                      "coal_consumption",
+                                      "gas_consumption",
+                                      "hydro_consumption",
+                                      "nuclear_consumption",
+                                      "oil_consumption",
+                                      "solar_consumption",
+                                      "wind_consumption"]].sum(axis=1)
 
-        gapminder_df = df1[['country', 'year',
-                            'gdp', 'population', 
-                            'total_consumption']].reset_index()
-        gapminder_df = gapminder_df[gapminder_df['total_consumption'] !=0]
+        gapminder_df = df[['country', 'year',
+                           'gdp', 'population',
+                           'total_consumption']].reset_index()
+        gapminder_df = gapminder_df[gapminder_df['total_consumption'] != 0]
 
         px.scatter(
             gapminder_df.query("year == "+str(year)),
@@ -266,12 +242,8 @@ class Energy():
             size_max=60).show(renderer="svg")
 
 
-#Phase 2: Day 1
-    def year_index (self):
+# Phase 2: Day 1
+
+
+    def year_index(self):
         df = self.data
-        
-        
-        
-        
-        
-        
