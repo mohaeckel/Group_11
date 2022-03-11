@@ -11,8 +11,13 @@ import requests
 import pandas as pd
 import os
 import plotly_express as px
-from datetime import datetime
-
+import matplotlib.pyplot as plt
+from matplotlib import style
+import numpy as np
+import plotly_express as px
+from statsmodels.tsa.arima.model import ARIMA
+from pmdarima import auto_arima
+style.use("ggplot")
 
 
 class Energy():
@@ -76,25 +81,42 @@ class Energy():
         else:
             pass
 
-        self.data["timestamp"] = pd.to_datetime(self.data["year"], format="%Y")
+        self.data["timestamp"] = pd.DatetimeIndex(pd.to_datetime(
+            self.data["year"], format="%Y")).year
         self.data = self.data.set_index("timestamp")
 
         # enrich data with 'emissions'
-        self.data['emissions'] = self.data[
-            'carbon_intensity_elec']*10**(-6) / 10**(-9)
-        self.data['emissions'] = self.data['emissions'].fillna(0)
-        
+        self.data["biofuel_emission"] = self.data["biofuel_electricity"] * \
+            1450*(10**3)
+        self.data["coal_emission"] = self.data["coal_electricity"]*1000*(10**3)
+        self.data["gas_emission"] = self.data["gas_electricity"]*455*(10**3)
+        self.data["hyrdo_emission"] = self.data["hydro_electricity"]*90*(10**3)
+        self.data["nuclear_emission"] = self.data["nuclear_electricity"] * \
+            5.5*(10**3)
+        self.data["oil_emission"] = self.data["oil_electricity"]*1200*(10**3)
+        self.data["solar_emission"] = self.data["solar_electricity"]*53*(10**3)
+        self.data["wind_emission"] = self.data["wind_electricity"]*14*(10**3)
+
+        self.data["emissions"] = self.data[["biofuel_emission",
+                                            "coal_emission",
+                                            "gas_emission",
+                                            "hyrdo_emission",
+                                            "nuclear_emission",
+                                            "oil_emission",
+                                            "solar_emission",
+                                            "wind_emission"]].sum(axis=1)
+
         # add total consumption for later computation
         self.data["total_consumption"] = self.data[["biofuel_consumption",
-                                      "coal_consumption",
-                                      "gas_consumption",
-                                      "hydro_consumption",
-                                      "nuclear_consumption",
-                                      "oil_consumption",
-                                      "solar_consumption",
-                                      "wind_consumption"]].sum(axis=1)
-        
-        #drop zeros of population
+                                                    "coal_consumption",
+                                                    "gas_consumption",
+                                                    "hydro_consumption",
+                                                    "nuclear_consumption",
+                                                    "oil_consumption",
+                                                    "solar_consumption",
+                                                    "wind_consumption"]].sum(axis=1)
+
+        # drop zeros of population
         self.data['population'] = self.data['population'].fillna(0)
 
         return self.data
@@ -136,7 +158,6 @@ class Energy():
         cut = df[["year", "country", "gdp"]]
         gdp_over_years_df = cut.pivot(
             index="year", columns="country", values="gdp")
-        
 
         return gdp_over_years_df[countries]
 
@@ -172,16 +193,13 @@ class Energy():
         df["total_consumption"] = df.iloc[:, :8].sum(axis=1)
         df = df.loc[countries]
         return df.reset_index()[["total_consumption",
-                               "emissions",'country']].plot.bar(x='country',
-                                                                ec='black',
-                                                      secondary_y="emissions"
-                                                      )
-        
-        
-        return df.reset_index().plot.bar(x = "country", 
-                                         y = "total_consumption"),
+                                 "emissions", 'country']].plot.bar(
+                                     x='country', ec='black',
+                                     secondary_y="emissions")
+
+        return df.reset_index().plot.bar(x="country",
+                                         y="total_consumption"),
         df['emissions'] = plt.subplots()
-        
 
     def prepare_df(self, metric):
         """
@@ -259,7 +277,7 @@ class Energy():
 
         """try:
             isinstance(year, int)
-                #or:  year = int()
+                # or:  year = int()
         except TypeError:
             print("Type Error: the year is not an integer.")
          """
@@ -282,10 +300,23 @@ class Energy():
             log_x=True,
             log_y=True,
             size_max=60).show(renderer="svg")
-        
-    def allcountries_scatter(self, year ):
+
+    def allcountries_scatter(self, year):
+        """
+
+
+        Parameters
+        ----------
+        year : TYPE
+            DESCRIPTION.
+
+        Returns
+        -------
+        None.
+
+        """
         scatter_df = self.data[['country', 'year', 'population',
-                           'total_consumption','emissions']]    
+                                'total_consumption', 'emissions']]
         px.scatter(
             scatter_df.query("year == "+str(year)),
             x="emissions",
@@ -295,7 +326,76 @@ class Energy():
             size="population",
             color="country",
             # hover_name="country",
-            #log_x=True,
-            #log_y=True,
+            # log_x=True,
+            # log_y=True,
             size_max=60).show(renderer="svg")
-    
+
+    def arima_forecast(self, country, points: int):
+        """
+
+
+        Parameters
+        ----------
+        country : TYPE
+            DESCRIPTION.
+        points : int
+            DESCRIPTION.
+
+        Returns
+        -------
+        None.
+
+        """
+        df = self.data[["country", "total_consumption", "emissions"]]
+        df = df[df["country"] == str(country)]
+        df = df.replace(0, np.nan)
+        df = df.dropna()
+        y_c = df["total_consumption"].iloc[-5:, ]
+        y_e = df["emissions"].iloc[-5:, ]
+        df = df[(df.index > 1990) & (df.index <= 2015)]
+
+        best_consumption = auto_arima(df["total_consumption"],
+                                      start_p=1,
+                                      start_q=1,
+                                      max_p=4,
+                                      max_q=3,
+                                      d=None,
+                                      trace=True,
+                                      error_action='ignore',
+                                      suppress_warnings=True,
+                                      stepwise=True,
+                                      )
+        coeff_c = best_consumption.order
+        model_c = ARIMA(df["total_consumption"], order=coeff_c)
+        model_fit_c = model_c.fit()
+        yhat_c = model_fit_c.predict(2015, 2019+points, typ="levels")
+
+        best_emissions = auto_arima(df["emissions"],
+                                    start_p=1,
+                                    start_q=1,
+                                    max_p=4,
+                                    max_q=3,
+                                    d=None,
+                                    trace=True,
+                                    error_action='ignore',
+                                    suppress_warnings=True,
+                                    stepwise=True,
+                                    )
+        coeff_em = best_emissions.order
+        model_e = ARIMA(df["emissions"], order=coeff_em)
+        model_fit_e = model_e.fit()
+        yhat_e = model_fit_e.predict(2015, 2019+points, typ="levels")
+        xhat = np.arange(2015, 2019+points+1)
+        x = np.arange(2015, 2019+1)
+
+        # plotting
+        fig, ax = plt.subplots(2)
+        ax[0].plot(df.index, df["total_consumption"])
+        ax[0].plot(xhat, yhat_c)
+        ax[0].plot(x, y_c)
+
+        ax[1].plot(df.index, df["emissions"])
+        ax[1].plot(xhat, yhat_e)
+        ax[1].plot(x, y_e)
+
+        fig.show()

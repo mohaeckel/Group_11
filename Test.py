@@ -1,8 +1,5 @@
 from energy import Energy
 
-
 test = Energy()
-df = test.read_data(drop_continents=True)
-
-
-test.consumption_country(["France","Germany"])
+test.read_data(True)
+test.arima_forecast("China", 10)
