@@ -390,10 +390,16 @@ class Energy():
 
         # plotting
         fig, ax = plt.subplots(2)
+        fig.tight_layout()
+        fig.subplots_adjust(hspace=0.6)
+
+        ax[0].set_title(
+            f"Total consumption throughout the years for {country}")
         ax[0].plot(df.index, df["total_consumption"])
         ax[0].plot(xhat, yhat_c)
         ax[0].plot(x, y_c)
 
+        ax[1].set_title(f"Total emissions throughout the years for {country}")
         ax[1].plot(df.index, df["emissions"])
         ax[1].plot(xhat, yhat_e)
         ax[1].plot(x, y_e)
