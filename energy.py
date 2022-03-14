@@ -15,7 +15,6 @@ import matplotlib.pyplot as plt
 from matplotlib import style
 import numpy as np
 import statsmodels.api as sm
-from statsmodels.tsa.arima_model import ARIMA
 from pmdarima import auto_arima
 style.use("ggplot")
 
@@ -74,7 +73,7 @@ class Energy():
         self.data = self.data[self.data["year"] >= 1970]
         if drop_continents is True:
             self.data = self.data.dropna(
-                subset="iso_code")
+                subset=['iso_code'])
             self.data = self.data.set_index("country").drop("World")
             self.data = self.data.reset_index()
 
@@ -155,6 +154,11 @@ class Energy():
                 columns = Countries
                 index = years
         """
+        if type(countries) != str:
+            raise TypeError("Variable countries not a string.")
+        if countries not in self.countries_list():
+            raise TypeError("ValueError: country not found")
+
         df = self.data
         cut = df[["year", "country", "gdp"]]
         gdp_over_years_df = cut.pivot(
@@ -181,6 +185,11 @@ class Energy():
             country.
 
         """
+        if type(countries) != list:
+            raise TypeError("TypeError: countries not list")
+        if countries not in self.countries_list():
+            raise ValueError("ValueError: country not in dataset")
+
         df = self.data[["country", "biofuel_consumption",
                         "coal_consumption",
                         "gas_consumption",
@@ -219,6 +228,10 @@ class Energy():
             A dataframe that has all countries in columns and years in rows.
             Values are the defined metric
         """
+        if type(metric) != str:
+            raise TypeError("TypeError: metric not string")
+        if metric not in self.data.columns:
+            raise ValueError("ValueError: metric not in dataset")
 
         df = self.data
         cut = df[["year", "country", metric]]
@@ -243,8 +256,10 @@ class Energy():
         area_chart : chart
 
         """
-        if country not in self.countries_list():  # hashing error here
-            raise TypeError("ValueError")
+        if type(country) != str:
+            raise TypeError("TypeError: country not string")
+        if country not in self.countries_list():
+            raise ValueError("ValueError: country not in dataset")
 
         self.data = self.data.reset_index()
         df = self.data[["country", "year", "biofuel_consumption",
@@ -282,7 +297,10 @@ class Energy():
         except TypeError:
             print("Type Error: the year is not an integer.")
          """
-
+        if type(year) != int:
+            raise TypeError("TypeError: year not int")
+        if year not in self.data['year']:
+            raise ValueError("ValueError: Year is not in data")
         df = self.data
 
         gapminder_df = df[['country', 'year',
@@ -316,6 +334,10 @@ class Energy():
         None.
 
         """
+        if type(year) != int:
+            raise TypeError("TypeError: year not int")
+        if year not in self.data['year']:
+            raise ValueError("ValueError: Year is not in data")
         scatter_df = self.data[['country', 'year', 'population',
                                 'total_consumption', 'emissions']]
         px.scatter(
@@ -327,8 +349,8 @@ class Energy():
             size="population",
             color="country",
             # hover_name="country",
-            # log_x=True,
-            # log_y=True,
+            log_x=True,
+            log_y=True,
             size_max=60).show(renderer="svg")
 
     def arima_forecast(self, country, points: int):
@@ -351,7 +373,6 @@ class Energy():
         df = df[df["country"] == str(country)]
         df = df.replace(0, np.nan)
         df = df.dropna()
-        # df = df[df.index > 1990]
 
         best_consumption = auto_arima(df["total_consumption"],
                                       start_p=3,
