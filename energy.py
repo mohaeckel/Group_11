@@ -14,8 +14,8 @@ import plotly_express as px
 import matplotlib.pyplot as plt
 from matplotlib import style
 import numpy as np
-import plotly_express as px
-from statsmodels.tsa.arima.model import ARIMA
+import statsmodels.api as sm
+from statsmodels.tsa.arima_model import ARIMA
 from pmdarima import auto_arima
 style.use("ggplot")
 
@@ -107,14 +107,15 @@ class Energy():
                                             "wind_emission"]].sum(axis=1)
 
         # add total consumption for later computation
-        self.data["total_consumption"] = self.data[["biofuel_consumption",
-                                                    "coal_consumption",
-                                                    "gas_consumption",
-                                                    "hydro_consumption",
-                                                    "nuclear_consumption",
-                                                    "oil_consumption",
-                                                    "solar_consumption",
-                                                    "wind_consumption"]].sum(axis=1)
+        self.data["total_consumption"] = self.data[[
+            "biofuel_consumption",
+            "coal_consumption",
+            "gas_consumption",
+            "hydro_consumption",
+            "nuclear_consumption",
+            "oil_consumption",
+            "solar_consumption",
+            "wind_consumption"]].sum(axis=1)
 
         # drop zeros of population
         self.data['population'] = self.data['population'].fillna(0)
@@ -350,43 +351,42 @@ class Energy():
         df = df[df["country"] == str(country)]
         df = df.replace(0, np.nan)
         df = df.dropna()
-        y_c = df["total_consumption"].iloc[-5:, ]
-        y_e = df["emissions"].iloc[-5:, ]
-        df = df[(df.index > 1990) & (df.index <= 2015)]
+        # df = df[df.index > 1990]
 
         best_consumption = auto_arima(df["total_consumption"],
-                                      start_p=1,
-                                      start_q=1,
-                                      max_p=4,
-                                      max_q=3,
+                                      start_p=3,
+                                      start_q=3,
+                                      max_p=8,
+                                      max_q=8,
+                                      max_order=20,
                                       d=None,
                                       trace=True,
                                       error_action='ignore',
                                       suppress_warnings=True,
-                                      stepwise=True,
+                                      stepwise=False
                                       )
         coeff_c = best_consumption.order
-        model_c = ARIMA(df["total_consumption"], order=coeff_c)
+        model_c = sm.tsa.arima.ARIMA(df["total_consumption"], order=coeff_c)
         model_fit_c = model_c.fit()
-        yhat_c = model_fit_c.predict(2015, 2019+points, typ="levels")
+        yhat_c = model_fit_c.predict(len(df), len(df)+points)
 
         best_emissions = auto_arima(df["emissions"],
-                                    start_p=1,
-                                    start_q=1,
-                                    max_p=4,
-                                    max_q=3,
+                                    start_p=3,
+                                    start_q=3,
+                                    max_p=8,
+                                    max_q=8,
+                                    max_order=20,
                                     d=None,
                                     trace=True,
                                     error_action='ignore',
                                     suppress_warnings=True,
-                                    stepwise=True,
+                                    stepwise=False,
                                     )
         coeff_em = best_emissions.order
-        model_e = ARIMA(df["emissions"], order=coeff_em)
+        model_e = sm.tsa.arima.ARIMA(df["emissions"], order=coeff_em)
         model_fit_e = model_e.fit()
-        yhat_e = model_fit_e.predict(2015, 2019+points, typ="levels")
-        xhat = np.arange(2015, 2019+points+1)
-        x = np.arange(2015, 2019+1)
+        yhat_e = model_fit_e.predict(len(df), len(df)+points)
+        xhat = np.arange(2019, 2019+points+1)
 
         # plotting
         fig, ax = plt.subplots(2)
@@ -397,11 +397,9 @@ class Energy():
             f"Total consumption throughout the years for {country}")
         ax[0].plot(df.index, df["total_consumption"])
         ax[0].plot(xhat, yhat_c)
-        ax[0].plot(x, y_c)
 
         ax[1].set_title(f"Total emissions throughout the years for {country}")
         ax[1].plot(df.index, df["emissions"])
         ax[1].plot(xhat, yhat_e)
-        ax[1].plot(x, y_e)
 
         fig.show()
