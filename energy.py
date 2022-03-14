@@ -40,7 +40,8 @@ class Energy():
                   url="https://github.com/owid/energy-data/raw/" +
                   "master/owid-energy-data.csv"):
         """
-        Downloads the data in the ´/downloads´ folder and reads data as well
+        Downloads the owid data in the ´/downloads´ folder, cleans it,
+        and reads data as well
 
         Parameters
         -----------
@@ -286,19 +287,18 @@ class Energy():
     def gapminder(self, year):
         """
         This method shows the correlation between gpd, total engery
-        consumption and the population per year.
+        consumption and the population for the year passed in the argument.
 
         Parameters
         ----------
-        year : TYPE
-        """
+        year : integer
+            year you want the chart to display
 
-        """try:
-            isinstance(year, int)
-                # or:  year = int()
-        except TypeError:
-            print("Type Error: the year is not an integer.")
-         """
+        Returns
+        -------
+        px.scatter : chart
+
+        """
         if type(year) != int:
             raise TypeError("TypeError: year not int")
         if year not in self.data['year']:
@@ -324,16 +324,17 @@ class Energy():
 
     def allcountries_scatter(self, year):
         """
-
+        This method shows the correlation between emissions, total engery
+        consumption and the population for the year passed in the argument.
 
         Parameters
         ----------
-        year : TYPE
-            DESCRIPTION.
+        year : integer
+            year you want the chart to display
 
         Returns
         -------
-        None.
+        px.scatter : chart
 
         """
         if type(year) != int:
@@ -357,18 +358,21 @@ class Energy():
 
     def arima_forecast(self, country, points: int):
         """
-
+        Method to forecast consumption and emissions for contry passed in
+        argument
 
         Parameters
         ----------
-        country : TYPE
-            DESCRIPTION.
+        country : str
+            Country for forecasting.
         points : int
-            DESCRIPTION.
+            Number of points for forecasting in the future.
 
         Returns
         -------
-        None.
+        fig: matplotlib figure
+            Figure displaying the forecast of consumtion and emissions for
+            the country passed in argument
 
         """
         df = self.data[["country", "total_consumption", "emissions"]]

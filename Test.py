@@ -9,4 +9,3 @@ df = test.read_data(True)
 # ch.plot(y="emissions")
 
 # test.gdp_over_years('sebhgj')
-test.allcountries_scatter("sh")
