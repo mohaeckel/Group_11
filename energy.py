@@ -52,7 +52,8 @@ class Energy():
         Returns
         --------
         df: pandas dataframe
-            Dataframe of the data
+            Dataframe of the data including consumption and emissions,
+            cleaned dataset from NAN, with an index of timestamp
         """
         path = os.getcwd()
         if os.path.exists(os.getcwd()+'/downloads') is False:
@@ -132,6 +133,7 @@ class Energy():
         Returns
         -------
         country_list : list
+            List of countries in the dataframe
 
         """
         countries = self.data["country"].unique()
