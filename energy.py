@@ -1,7 +1,7 @@
 """
 MASTER FILE ASSIGNMENT 1 __GROUP11
 
-Farouq El-Abass
+Farouq El-Abbass
 Moritz Häckel
 Dominik Trut
 Moritz Güttersberger
