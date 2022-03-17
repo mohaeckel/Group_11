@@ -157,10 +157,10 @@ class Energy():
                 columns = Countries
                 index = years
         """
-        if type(countries) != str:
-            raise TypeError("Variable countries not a string.")
-        if countries not in self.countries_list():
-            raise TypeError("ValueError: country not found")
+        if type(countries) != list:
+            raise TypeError("TypeError: countries not a list")
+        if not all(item in self.countries_list() for item in countries):
+            raise ValueError("ValueError: country not in dataset")
 
         df = self.data
         cut = df[["year", "country", "gdp"]]
@@ -190,7 +190,7 @@ class Energy():
         """
         if type(countries) != list:
             raise TypeError("TypeError: countries not list")
-        if countries not in self.countries_list():
+        if not all(item in self.countries_list() for item in countries):
             raise ValueError("ValueError: country not in dataset")
 
         df = self.data[["country", "biofuel_consumption",
@@ -264,7 +264,7 @@ class Energy():
         if country not in self.countries_list():
             raise ValueError("ValueError: country not in dataset")
 
-        self.data = self.data.reset_index()
+        self.data = self.data.reset_index(drop=True)
         df = self.data[["country", "year", "biofuel_consumption",
                         "coal_consumption",
                         "gas_consumption",
