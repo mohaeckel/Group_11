@@ -27,8 +27,43 @@ class Energy():
     Attributes
     -----------
     data : pandas dataframe
-        Dataframe including the energy data 
-        
+        Dataframe including the energy data
+
+    Methods
+    -------
+    read_data(drop_continents: bool = False,
+                  url="https://github.com/owid/energy-data/raw/" +
+                  "master/owid-energy-data.csv")
+        Downloads the owid data in the ´/downloads´ folder, cleans it,
+        and reads data as well
+
+    countries_list()
+        Returns the list of countries in the dataº
+
+    gdp_over_years(countries):
+        Receive a string or a list of strings -> Compare the "gdp" column of
+        each received country over the years
+
+    consumption_country(countries):
+        The method produces a dataframe with defined countries in columns and
+        all years in rows. Values are the sum of the total energy consumption
+        of the country.
+
+    prepare_df(metric):
+        The method produces a dataframe of all countries and years for one
+        transmitted metric (i.e. GDP or Population).
+
+    consumption_area_plot(country, normalize):
+        Returns an area chart of the '_consumption' columns
+        for a selected country
+
+    allcountries_scatter(year):
+        This method shows the correlation between emissions, total engery
+        consumption and the population for the year passed in the argument.
+
+    arima_forecast(country, points: int):
+        Method to forecast consumption and emissions for contry passed in
+        argument
     """
 
     def __init__(self, data=None):
