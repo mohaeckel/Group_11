@@ -1,0 +1,402 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>energy module &mdash; Energy Group 11 17.03.2022 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Energy Group 11
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">energy module</a></li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Energy Group 11</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>energy module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/energy.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="module-energy">
+<span id="energy-module"></span><h1>energy module<a class="headerlink" href="#module-energy" title="Permalink to this headline">¶</a></h1>
+<p>MASTER FILE ASSIGNMENT 1 __GROUP11</p>
+<p>Farouq El-Abbass
+Moritz Häckel
+Dominik Trut
+Moritz Güttersberger</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="energy.Energy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">energy.</span></span><span class="sig-name descname"><span class="pre">Energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#energy.Energy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class is a model for all the methods introduced to inspect the data
+set</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="energy.Energy.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#energy.Energy.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dataframe including the energy data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>pandas dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="energy.Energy.allcountries_scatter">
+<span class="sig-name descname"><span class="pre">allcountries_scatter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#energy.Energy.allcountries_scatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method shows the correlation between emissions, total engery
+consumption and the population for the year passed in the argument.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>year</strong> (<em>integer</em>) – year you want the chart to display</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>px.scatter</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>chart</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="energy.Energy.arima_forecast">
+<span class="sig-name descname"><span class="pre">arima_forecast</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">country</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#energy.Energy.arima_forecast" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to forecast consumption and emissions for contry passed in
+argument</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>country</strong> (<em>str</em>) – Country for forecasting.</p></li>
+<li><p><strong>points</strong> (<em>int</em>) – Number of points for forecasting in the future.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>fig</strong> – Figure displaying the forecast of consumtion and emissions for
+the country passed in argument</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>matplotlib figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="energy.Energy.consumption_area_plot">
+<span class="sig-name descname"><span class="pre">consumption_area_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">country</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#energy.Energy.consumption_area_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an area chart of the ‘_consumption’ columns
+for a selected country</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>country</strong> (<em>string</em>) – country you want to see the area chart for.</p></li>
+<li><p><strong>normalize</strong> (<em>boolean</em>) – normalize the chart or not.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>area_chart</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>chart</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="energy.Energy.consumption_country">
+<span class="sig-name descname"><span class="pre">consumption_country</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">countries</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#energy.Energy.consumption_country" title="Permalink to this definition">¶</a></dt>
+<dd><p>The method produces a dataframe with defined countries in columns and
+all years in rows. Values are the sum of the total energy consumption
+of the country.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>countries</strong> (<em>list of strings</em>) – A list of countries that are included in the consumption per
+country dataframe</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Displays the bar plot of the total consumption for each
+country.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Bar Plot</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="energy.Energy.countries_list">
+<span class="sig-name descname"><span class="pre">countries_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#energy.Energy.countries_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of countries in the data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>country_list</strong> – List of countries in the dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="energy.Energy.gapminder">
+<span class="sig-name descname"><span class="pre">gapminder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#energy.Energy.gapminder" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method shows the correlation between gpd, total engery
+consumption and the population for the year passed in the argument.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>year</strong> (<em>integer</em>) – year you want the chart to display</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>px.scatter</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>chart</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="energy.Energy.gdp_over_years">
+<span class="sig-name descname"><span class="pre">gdp_over_years</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">countries</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#energy.Energy.gdp_over_years" title="Permalink to this definition">¶</a></dt>
+<dd><p>Receive a string or a list of strings -&gt; Compare the “gdp” column of
+each received country over the years</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>countries</strong> (<em>list of strings</em>) – DESCRIPTION. Name of every country that is included</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p><strong>gdp_over_years_df</strong> –</p>
+<dl class="simple">
+<dt>DESCRIPTION: GPD of countries over the years</dt><dd><p>columns = Countries
+index = years</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas Dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="energy.Energy.prepare_df">
+<span class="sig-name descname"><span class="pre">prepare_df</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metric</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#energy.Energy.prepare_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>The method produces a dataframe of all countries and years for one
+transmitted metric (i.e. GDP or Population).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>metric</strong> (<em>string</em>) – The name of the column from which values are extracted
+(i.e. “gdp” for values of gdp column).</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>metric_df</strong> – A dataframe that has all countries in columns and years in rows.
+Values are the defined metric</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="energy.Energy.read_data">
+<span class="sig-name descname"><span class="pre">read_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drop_continents</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'https://github.com/owid/energy-data/raw/master/owid-energy-data.csv'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#energy.Energy.read_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Downloads the owid data in the ´/downloads´ folder, cleans it,
+and reads data as well</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>string</em>) – Link of the data from internet</p></li>
+<li><p><strong>drop_continents</strong> (<em>bool</em>) – Drops continents and aggregated countries from dataset</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>df</strong> – Dataframe of the data including consumption and emissions,
+cleaned dataset from NAN, with an index of timestamp</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2022, Farouq El-Abbass, Dominik Trut, Moritz Haeckel, Moritz Guettersberger
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
