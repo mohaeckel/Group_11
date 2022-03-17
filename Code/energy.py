@@ -361,7 +361,7 @@ class Energy():
             # hover_name="country",
             log_x=True,
             log_y=True,
-            size_max=60).show(renderer="svg")
+            size_max=60).show()
 
     def allcountries_scatter(self, year):
         """
@@ -395,7 +395,7 @@ class Energy():
             # hover_name="country",
             log_x=True,
             log_y=True,
-            size_max=60).show(renderer="svg")
+            size_max=60).show()
 
     def arima_forecast(self, country, points: int):
         """
