@@ -253,11 +253,7 @@ class Energy():
         return df.reset_index()[["total_consumption",
                                  "emissions", 'country']].plot.bar(
                                      x='country', ec='black',
-                                     secondary_y="emissions")
-
-        return df.reset_index().plot.bar(x="country",
-                                         y="total_consumption"),
-        df['emissions'] = plt.subplots()
+                                     secondary_y="emissions", figsize=(20, 10))
 
     def prepare_df(self, metric):
         """
@@ -325,9 +321,9 @@ class Energy():
                 [dfcountry[["country", "year"]],
                  dfcountry.iloc[:, 3:].apply(
                      lambda x: x / x.sum(), axis=1)], axis=1)
-            return df_norm.plot.area('year', stacked=True)
+            return df_norm.plot.area('year', stacked=True, figsize=(20, 10))
         else:
-            return dfcountry.plot.area('year', stacked=True)
+            return dfcountry.plot.area('year', stacked=True, figsize=(20, 10))
 
     def gapminder(self, year):
         """
@@ -432,12 +428,14 @@ class Energy():
                                       max_q=8,
                                       max_order=20,
                                       d=None,
-                                      trace=True,
+                                      trace=False,
                                       error_action='ignore',
                                       suppress_warnings=True,
                                       stepwise=False
                                       )
         coeff_c = best_consumption.order
+        print(f'The consumption for {country} can be forecasted with an ARIMA')
+        print(f'of an order of {coeff_c}')
         model_c = sm.tsa.arima.ARIMA(df["total_consumption"], order=coeff_c)
         model_fit_c = model_c.fit()
         yhat_c = model_fit_c.predict(len(df), len(df)+points)
@@ -449,19 +447,21 @@ class Energy():
                                     max_q=8,
                                     max_order=20,
                                     d=None,
-                                    trace=True,
+                                    trace=False,
                                     error_action='ignore',
                                     suppress_warnings=True,
                                     stepwise=False,
                                     )
         coeff_em = best_emissions.order
+        print(f'The emissions for {country} can be forecasted with an ARIMA')
+        print(f'of an order of {coeff_em}')
         model_e = sm.tsa.arima.ARIMA(df["emissions"], order=coeff_em)
         model_fit_e = model_e.fit()
         yhat_e = model_fit_e.predict(len(df), len(df)+points)
         xhat = np.arange(2019, 2019+points+1)
 
         # plotting
-        fig, ax = plt.subplots(2)
+        fig, ax = plt.subplots(2, figsize=(15, 15))
         fig.tight_layout()
         fig.subplots_adjust(hspace=0.6)
 
