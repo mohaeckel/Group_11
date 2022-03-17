@@ -20,6 +20,16 @@ style.use("ggplot")
 
 
 class Energy():
+    """
+    This class is a model for all the methods introduced to inspect the data
+    set
+
+    Attributes
+    -----------
+    data : pandas dataframe
+        Dataframe including the energy data 
+        
+    """
 
     def __init__(self, data=None):
         """
@@ -27,7 +37,7 @@ class Energy():
 
         Parameters
         -----------
-        data : panda dataframe
+        data : pandas dataframe
             Data for the Energy but will be affected later
 
         Returns
