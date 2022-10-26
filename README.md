@@ -1,5 +1,4 @@
 # Group_11
-Best group eva
 
 Farouq El-Abbass 49412@novasbe.pt
 
